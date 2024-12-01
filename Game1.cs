@@ -41,8 +41,11 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        // Added the specific part you provided below:
-        base.Update(gameTime); // Existing base call for game updates
+        // Check for jump input (Spacebar): If pressed, the bird jumps upwards
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            _birdVelocity.Y = JumpStrength; // Jump on Space key press
+        }
 
         // Apply gravity effect: Increase the vertical velocity every frame to simulate gravity
         _birdVelocity.Y += Gravity;  // Adds gravity force to the bird's velocity (making it fall)
@@ -50,16 +53,10 @@ public class Game1 : Game
         // Update the bird's position based on its velocity (simple physics)
         _birdPosition += _birdVelocity;  // Moves the bird based on its velocity
 
-        // Check for jump input (Spacebar): If pressed, the bird jumps upwards
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
-        {
-            _birdVelocity.Y = JumpStrength;  // Set the velocity to a negative value (jump)
-        }
-
         // Prevent the bird from falling off the screen
-        if (_birdPosition.Y > _graphics.PreferredBackBufferHeight - _birdTexture.Height)
+        if (_birdPosition.Y > GraphicsDevice.Viewport.Height)
         {
-            _birdPosition.Y = _graphics.PreferredBackBufferHeight - _birdTexture.Height;  // Keep the bird at the bottom of the screen
+            _birdPosition.Y = GraphicsDevice.Viewport.Height;  // Keep the bird at the bottom of the screen
             _birdVelocity.Y = 0;  // Stop the bird from moving further downward
         }
 
@@ -69,6 +66,8 @@ public class Game1 : Game
             _birdPosition.Y = 0;  // Reset bird's position to the top of the screen
             _birdVelocity.Y = 0;  // Stop upward movement when it hits the top
         }
+
+        base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
@@ -85,6 +84,6 @@ public class Game1 : Game
         // End drawing
         _spriteBatch.End();
 
-        base.Draw(gameTime); 
+        base.Draw(gameTime);
     }
 }
