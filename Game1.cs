@@ -1,66 +1,89 @@
-﻿/*
- * Branch Name: Final
- * Project: Final Project - GroupNumberFinalProject
- * Course: [Game Programming and Data Structures] - [PROG2370]
- */
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Group3FinalProject
+public class Game1 : Game
 {
-    public class Game1 : Game
-    {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private GraphicsDeviceManager _graphics;
+    private GraphicsDeviceManager _graphics;
+    private SpriteBatch _spriteBatch;
+
+    // Bird-related variables
     private Vector2 _birdPosition;
     private Vector2 _birdVelocity;
-    private const float Gravity = 0.5f;
-    private const float JumpStrength = -10f;
+    private const float Gravity = 0.5f;  // Constant for gravity effect
+    private const float JumpStrength = -10f; // Constant for the jump strength (negative to move upwards)
 
+    // Texture for the bird
+    private Texture2D _birdTexture;
 
-        public Game1()
+    public Game1()
+    {
+        _graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
+        IsMouseVisible = true;
+    }
+
+    protected override void Initialize()
+    {
+        // Initialize bird's starting position and velocity
+        _birdPosition = new Vector2(100, 200);  // Initial position of the bird
+        _birdVelocity = Vector2.Zero; // Initial velocity is zero (no movement)
+
+        base.Initialize();
+    }
+
+    protected override void LoadContent()
+    {
+        // Load the bird texture (make sure the file exists in the "Content" folder)
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _birdTexture = Content.Load<Texture2D>("bird");  // Load texture named "bird.png" (ensure it's in the Content folder)
+    }
+
+    protected override void Update(GameTime gameTime)
+    {
+        // Check for jump input (Spacebar): If pressed, the bird jumps upwards
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            _birdVelocity.Y = JumpStrength; // Jump on Space key press
         }
 
-        protected override void Initialize()
+        // Apply gravity effect: Increase the vertical velocity every frame to simulate gravity
+        _birdVelocity.Y += Gravity;  // Adds gravity force to the bird's velocity (making it fall)
+
+        // Update the bird's position based on its velocity (simple physics)
+        _birdPosition += _birdVelocity;  // Moves the bird based on its velocity
+
+        // Prevent the bird from falling off the screen
+        if (_birdPosition.Y > GraphicsDevice.Viewport.Height)
         {
-            _birdPosition = new Vector2(100, 200);
-        _birdVelocity = Vector2.Zero;
-
-
-            base.Initialize();
+            _birdPosition.Y = GraphicsDevice.Viewport.Height;  // Keep the bird at the bottom of the screen
+            _birdVelocity.Y = 0;  // Stop the bird from moving further downward
         }
 
-        protected override void LoadContent()
+        // Prevent the bird from flying above the screen
+        if (_birdPosition.Y < 0)
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            _birdPosition.Y = 0;  // Reset bird's position to the top of the screen
+            _birdVelocity.Y = 0;  // Stop upward movement when it hits the top
         }
 
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+        base.Update(gameTime);
+    }
 
-            // TODO: Add your update logic here
+    protected override void Draw(GameTime gameTime)
+    {
+        // Clear the screen with a background color (Cornflower Blue)
+        GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            base.Update(gameTime);
-        }
+        // Begin drawing with SpriteBatch
+        _spriteBatch.Begin();
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+        // Draw the bird texture at the updated position
+        _spriteBatch.Draw(_birdTexture, _birdPosition, Color.White);
 
-            // TODO: Add your drawing code here
+        // End drawing
+        _spriteBatch.End();
 
-            base.Draw(gameTime);
-        }
+        base.Draw(gameTime);
     }
 }
