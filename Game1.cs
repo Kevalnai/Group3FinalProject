@@ -14,6 +14,12 @@ namespace Group3FinalProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private GraphicsDeviceManager _graphics;
+    private Vector2 _birdPosition;
+    private Vector2 _birdVelocity;
+    private const float Gravity = 0.5f;
+    private const float JumpStrength = -10f;
+
 
         public Game1()
         {
@@ -24,7 +30,9 @@ namespace Group3FinalProject
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _birdPosition = new Vector2(100, 200);
+        _birdVelocity = Vector2.Zero;
+
 
             base.Initialize();
         }
