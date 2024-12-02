@@ -15,6 +15,8 @@ namespace Group3FinalProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _birdTexture;
+        private Texture2D _pipeTexture;
 
         public Game1()
         {
@@ -33,7 +35,8 @@ namespace Group3FinalProject
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _birdTexture = Content.Load<Texture2D>("bird");
+            _pipeTexture = Content.Load<Texture2D>("pipe");
             // TODO: use this.Content to load your game content here
         }
 
