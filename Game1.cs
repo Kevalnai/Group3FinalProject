@@ -16,6 +16,8 @@ namespace Group3FinalProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        // Neccessay Texture Added
         private Texture2D _birdTexture;
         private Texture2D _pipeTexture;
         private SpriteFont _font;
