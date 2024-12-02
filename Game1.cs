@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 public class Game1 : Game
 {
@@ -10,11 +11,16 @@ public class Game1 : Game
     // Bird-related variables
     private Vector2 _birdPosition;
     private Vector2 _birdVelocity;
-    private const float Gravity = 0.5f;  // Constant for gravity effect
-    private const float JumpStrength = -10f; // Constant for the jump strength (negative to move upwards)
-
-    // Texture for the bird
+    private const float Gravity = 0.5f; // Constant for gravity effect
+    private const float JumpStrength = -10f; // Constant for jump strength (negative to move upwards)
     private Texture2D _birdTexture;
+
+    // Pipe-related variables
+    private List<Rectangle> _pipes = new List<Rectangle>
+    {
+        new Rectangle(400, 300, 50, 200),
+        new Rectangle(600, 200, 50, 250)
+    };
 
     public Game1()
     {
@@ -25,46 +31,57 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // Initialize bird's starting position and velocity
-        _birdPosition = new Vector2(100, 200);  // Initial position of the bird
-        _birdVelocity = Vector2.Zero; // Initial velocity is zero (no movement)
+        _birdPosition = new Vector2(100, 200); // Initial bird position
+        _birdVelocity = Vector2.Zero;         // Initial velocity
 
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        // Load the bird texture (make sure the file exists in the "Content" folder)
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _birdTexture = Content.Load<Texture2D>("bird");  // Load texture named "bird.png" (ensure it's in the Content folder)
+        _birdTexture = Content.Load<Texture2D>("bird"); // Load bird texture from the Content folder
+    }
+
+    private bool CheckCollision()
+    {
+        foreach (var pipe in _pipes)
+        {
+            if (new Rectangle((int)_birdPosition.X, (int)_birdPosition.Y, 30, 30).Intersects(pipe))
+                return true;
+        }
+        return false;
     }
 
     protected override void Update(GameTime gameTime)
     {
-        // Check for jump input (Spacebar): If pressed, the bird jumps upwards
+        // Jump logic
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
-            _birdVelocity.Y = JumpStrength; // Jump on Space key press
+            _birdVelocity.Y = JumpStrength;
         }
 
-        // Apply gravity effect: Increase the vertical velocity every frame to simulate gravity
-        _birdVelocity.Y += Gravity;  // Adds gravity force to the bird's velocity (making it fall)
+        // Apply gravity
+        _birdVelocity.Y += Gravity;
+        _birdPosition += _birdVelocity;
 
-        // Update the bird's position based on its velocity (simple physics)
-        _birdPosition += _birdVelocity;  // Moves the bird based on its velocity
+        // Collision detection
+        if (CheckCollision())
+        {
+            _birdVelocity = Vector2.Zero; // Stop movement on collision
+        }
 
-        // Prevent the bird from falling off the screen
+        // Prevent bird from leaving screen bounds
         if (_birdPosition.Y > GraphicsDevice.Viewport.Height)
         {
-            _birdPosition.Y = GraphicsDevice.Viewport.Height;  // Keep the bird at the bottom of the screen
-            _birdVelocity.Y = 0;  // Stop the bird from moving further downward
+            _birdPosition.Y = GraphicsDevice.Viewport.Height;
+            _birdVelocity.Y = 0;
         }
 
-        // Prevent the bird from flying above the screen
         if (_birdPosition.Y < 0)
         {
-            _birdPosition.Y = 0;  // Reset bird's position to the top of the screen
-            _birdVelocity.Y = 0;  // Stop upward movement when it hits the top
+            _birdPosition.Y = 0;
+            _birdVelocity.Y = 0;
         }
 
         base.Update(gameTime);
@@ -72,18 +89,30 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        // Clear the screen with a background color (Cornflower Blue)
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // Begin drawing with SpriteBatch
         _spriteBatch.Begin();
 
-        // Draw the bird texture at the updated position
+        // Draw bird
         _spriteBatch.Draw(_birdTexture, _birdPosition, Color.White);
 
-        // End drawing
+        // Draw pipes
+        foreach (var pipe in _pipes)
+        {
+            _spriteBatch.Draw(CreateTexture(pipe.Width, pipe.Height, Color.Green), pipe, Color.White);
+        }
+
         _spriteBatch.End();
 
         base.Draw(gameTime);
+    }
+
+    private Texture2D CreateTexture(int width, int height, Color color)
+    {
+        Texture2D texture = new Texture2D(GraphicsDevice, width, height);
+        Color[] data = new Color[width * height];
+        for (int i = 0; i < data.Length; ++i) data[i] = color;
+        texture.SetData(data);
+        return texture;
     }
 }
