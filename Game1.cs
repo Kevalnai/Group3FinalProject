@@ -36,6 +36,15 @@ namespace Group3FinalProject
             base.Initialize();
         }
 
+        private Texture2D GenerateSolidColorTexture(Color color, int width, int height)
+        {
+            Texture2D texture = new Texture2D(GraphicsDevice, width, height);
+            Color[] data = new Color[width * height];
+            for (int i = 0; i < data.Length; i++) data[i] = color;
+            texture.SetData(data);
+            return texture;
+        }
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
