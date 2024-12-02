@@ -6,6 +6,7 @@
 */
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -17,6 +18,9 @@ namespace Group3FinalProject
         private SpriteBatch _spriteBatch;
         private Texture2D _birdTexture;
         private Texture2D _pipeTexture;
+        private SpriteFont _font;
+        private SoundEffect _jumpSound;
+        private SoundEffect _gameOverSound;
 
         public Game1()
         {
@@ -37,6 +41,10 @@ namespace Group3FinalProject
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _birdTexture = Content.Load<Texture2D>("bird");
             _pipeTexture = Content.Load<Texture2D>("pipe");
+            _font = Content.Load<SpriteFont>("gameFont");
+            _jumpSound = Content.Load<SoundEffect>("jumpSound");
+            _gameOverSound = Content.Load<SoundEffect>("gameOverSound");
+
             // TODO: use this.Content to load your game content here
         }
 
