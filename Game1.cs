@@ -1,8 +1,15 @@
+
 ﻿
 
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+=======
+
+
+
+>>>>>>> 1714e7eae849f0e75926d7d69c53c269c8ec9494
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,6 +19,12 @@ namespace Group3FinalProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        
+    private Vector2 _birdPosition;
+    private Vector2 _birdVelocity;
+    private const float Gravity = 0.5f;
+    private const float JumpStrength = -10f;
+
 
         // Neccessay Texture Added
         private Texture2D _birdTexture;
@@ -29,7 +42,9 @@ namespace Group3FinalProject
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _birdPosition = new Vector2(100, 200);
+        _birdVelocity = Vector2.Zero;
+
 
             base.Initialize();
         }
