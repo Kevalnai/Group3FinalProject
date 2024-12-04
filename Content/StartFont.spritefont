@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+	<Asset Type="Graphics:FontDescription">
+		<!-- Font used for Start Message -->
+		<FontName>Arial</FontName>
+
+		<!-- Font size and style for the Start screen -->
+		<Size>24</Size>
+		<Spacing>1</Spacing>
+		<UseKerning>true</UseKerning>
+		<Style>Italic</Style>
+
+		<!-- Character regions -->
+		<CharacterRegions>
+			<CharacterRegion>
+				<Start>&#32;</Start>
+				<End>&#126;</End>
+			</CharacterRegion>
+		</CharacterRegions>
+	</Asset>
+</XnaContent>

@@ -1,4 +1,28 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Flappy Bird
+// Game
+// Developed using MonoGame, this game replicates the mechanics of the classic Flappy Bird game. 
+// Players control a bird that navigates through obstacles by jumping vertically. The bird gains altitude
+// with a key press and is affected by gravity, requiring precise timing to pass through gaps in the pipes.
+//
+// Features:
+// - Realistic gravity and jump mechanics.
+// - Randomly generated pipe gaps to increase replayability.
+// - A scoring system that rewards the player for successfully passing through pipes.
+// - Sound effects that play when the bird successfully passes a pipe.
+// - Start and restart functionality with keypress controls.
+// - Visual prompts like "Press Enter to Start" and "Game Over" to guide the player.
+//
+// Controls:
+// - Press Enter to start the game.
+// - Press Space to make the bird jump.
+// - Press R to restart the game after a game over.
+//
+// Objective:
+// The goal is to achieve the highest possible score by passing through as many pipe gaps as possible
+// without colliding with the pipes or the screen boundaries.
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -6,8 +30,13 @@ using System.Collections.Generic;
 
 namespace Group3FinalProject
 {
-    public class Game1 : Game
-    {
+  public Game1()
+{
+    _graphics = new GraphicsDeviceManager(this);
+    Content.RootDirectory = "Content";
+    IsMouseVisible = true;
+}
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
