@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 
@@ -24,6 +25,11 @@ namespace Group3FinalProject
         private bool _gameStarted = false;
         private bool _gameOver = false;
         private int _score = 0;
+
+        private SoundEffect _jumpSound;
+        private SoundEffect _gameOverSound;
+        private SoundEffectInstance _jumpSoundInstance;
+        private SoundEffectInstance _gameOverSoundInstance;
 
         public Game1()
         {
@@ -51,6 +57,9 @@ namespace Group3FinalProject
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _jumpSound = Content.Load<SoundEffect>("jump");
+            _gameOverSound = Content.Load<SoundEffect>("gameover"); 
         }
 
         private bool CheckCollision()
@@ -91,6 +100,7 @@ namespace Group3FinalProject
             if (keyboardState.IsKeyDown(Keys.Space))
             {
                 _birdVelocity.Y = JumpStrength;
+                _jumpSound.Play(); 
             }
 
             _birdVelocity.Y += Gravity;
@@ -113,6 +123,7 @@ namespace Group3FinalProject
             if (CheckCollision())
             {
                 _gameOver = true;
+                _gameOverSound.Play();
             }
 
             if (_birdPosition.Y > GraphicsDevice.Viewport.Height)
